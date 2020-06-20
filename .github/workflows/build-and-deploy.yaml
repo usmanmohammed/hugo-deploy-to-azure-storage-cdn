@@ -35,17 +35,12 @@ jobs:
         with:
           azcliversion: 2.6.0
           inlineScript: |
-            az storage blob delete-batch -s "\$web" \
-              --connection-string "${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}"
-            az storage blob upload-batch -d "\$web" -s ./public \
-              --connection-string "${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}"
+            az storage blob delete-batch -s "\$web" --connection-string "${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}"
+            az storage blob upload-batch -d "\$web" -s ./public --connection-string "${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}"
                     
       - name: Purge Azure CDN Resources
         run:
-          az cdn endpoint purge -n ${{ secrets.AZURE_CDN_ENDPOINT }} \
-            --profile-name ${{ secrets.AZURE_CDN_PROFILE_NAME }} \
-            --content-paths "/*" --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
-            --no-wait
+          az cdn endpoint purge -n ${{ secrets.AZURE_CDN_ENDPOINT }} --profile-name ${{ secrets.AZURE_CDN_PROFILE_NAME }} --content-paths "/*" --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --no-wait
           
       - name: Dispose Azure Service Principal Session
         run: |
